@@ -9,7 +9,7 @@ Site de documentation du club cybersécurité **ft_root** de l'école 42Lyon.
 
 ## Site
 
-[ft_root.github.io](https://ft_root.github.io)
+[ft-root-42lyon.github.io](https://ft-root-42lyon.github.io/workflows.html)
 
 ## Environnement
 
@@ -17,10 +17,10 @@ L'environnement de reverse engineering ft_root est un JuNest préconfiguré avec
 
 ```bash
 # Lancer l'environnement
-./start.sh
+/sgoinfre/ft-root/start.sh
 
 # Mettre à jour l'environnement
-./start.sh --update
+/sgoinfre/ft-root/start.sh --update
 ```
 
 ## Club
