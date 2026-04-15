@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ft_root — Reverse Engineering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #e0001b;
+    --red-dim: #8a0011;
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --bg3: #1a1a1a;
+    --border: #2a2a2a;
+    --text: #e8e8e8;
+    --muted: #888;
+    --mono: 'Share Tech Mono', monospace;
+    --sans: 'Rajdhani', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* SCANLINES overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(10,10,10,0.95);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    height: 56px;
+    backdrop-filter: blur(8px);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-logo img {
+    height: 32px;
+    width: auto;
+  }
+
+  .nav-logo span {
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--text);
+    letter-spacing: 0.05em;
+  }
+
+  .nav-logo span b {
+    color: var(--red);
+  }
+
+  nav a {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  nav a:hover, nav a.active { color: var(--red); }
+
+  .nav-links { display: flex; gap: 1.5rem; margin-left: auto; }
+
+  /* HERO */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--red), transparent);
+  }
+
+  .hero-logo {
+    width: 120px;
+    height: auto;
+    margin-bottom: 2rem;
+    filter: drop-shadow(0 0 20px rgba(224,0,27,0.4));
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { filter: drop-shadow(0 0 20px rgba(224,0,27,0.4)); }
+    50% { filter: drop-shadow(0 0 40px rgba(224,0,27,0.7)); }
+  }
+
+  .hero h1 {
+    font-family: var(--mono);
+    font-size: clamp(2rem, 6vw, 4rem);
+    letter-spacing: 0.1em;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .hero h1 span { color: var(--red); }
+
+  .hero-sub {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-desc {
+    max-width: 560px;
+    font-size: 17px;
+    color: #aaa;
+    line-height: 1.7;
+  }
+
+  /* GRID CARDS */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+
+  .section-title {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--red);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .card {
+    background: var(--bg2);
+    padding: 1.5rem;
+    transition: background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--red);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .card:hover { background: var(--bg3); }
+  .card:hover::before { opacity: 1; }
+
+  .card-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--red);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .card p {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .card-link {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--red);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap 0.2s;
+  }
+
+  .card-link:hover { gap: 10px; }
+
+  /* BADGE DIFF */
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    padding: 2px 8px;
+    border: 1px solid;
+    text-transform: uppercase;
+  }
+
+  .badge-easy { color: #4ade80; border-color: #4ade80; }
+  .badge-medium { color: #facc15; border-color: #facc15; }
+  .badge-hard { color: var(--red); border-color: var(--red); }
+
+  /* QUICK WORKFLOW */
+  .workflow {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    margin-top: 4rem;
+  }
+
+  .workflow-steps {
+    display: flex;
+    gap: 0;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+
+  .step {
+    flex: 1;
+    min-width: 160px;
+    padding: 1rem 1.5rem;
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+
+  .step:last-child { border-right: none; }
+
+  .step-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--red);
+    margin-bottom: 0.3rem;
+  }
+
+  .step h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.3rem;
+  }
+
+  .step p {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  code {
+    font-family: var(--mono);
+    font-size: 13px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 2px 6px;
+    color: #f97316;
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  footer span { color: var(--red); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="logo.webp" alt="ft_root logo">
+    <span>ft_<b>root</b></span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="active">Accueil</a>
+    <a href="outils.html">Outils</a>
+    <a href="workflows.html">Workflows</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <img src="logo.webp" alt="ft_root" class="hero-logo">
+  <h1>ft_<span>root</span></h1>
+  <p class="hero-sub">42Lyon — Club Cybersécurité</p>
+  <p class="hero-desc">
+    Bienvenue dans l'environnement de reverse engineering de ft_root.
+    Retrouve ici tous les outils, workflows et ressources pour débuter et progresser en reverse engineering.
+  </p>
+</section>
+
+<div class="section">
+  <p class="section-title">Explorer</p>
+  <div class="cards">
+
+    <div class="card">
+      <p class="card-tag">Référence</p>
+      <h3>Outils</h3>
+      <p>Liste complète des outils disponibles dans l'environnement ft_root, leurs usages et commandes de base.</p>
+      <a href="outils.html" class="card-link">Voir les outils →</a>
+    </div>
+
+    <div class="card">
+      <p class="card-tag">Guides</p>
+      <h3>Workflows</h3>
+      <p>Méthodologies pas à pas selon le type de binaire : ELF, .NET, APK, WASM, Lua, Go et bien d'autres.</p>
+      <a href="workflows.html" class="card-link">Voir les workflows →</a>
+    </div>
+
+  </div>
+
+  <div class="workflow">
+    <p class="section-title">Approche générale</p>
+    <div class="workflow-steps">
+      <div class="step">
+        <p class="step-num">01</p>
+        <h4>Identifier</h4>
+        <p>Utilise <code>file</code> et <code>strings</code> pour identifier le type de binaire.</p>
+      </div>
+      <div class="step">
+        <p class="step-num">02</p>
+        <h4>Analyser</h4>
+        <p>Choisis l'outil adapté au type de binaire détecté.</p>
+      </div>
+      <div class="step">
+        <p class="step-num">03</p>
+        <h4>Décompiler</h4>
+        <p>Ouvre dans Ghidra, jadx, ILSpy ou l'outil approprié.</p>
+      </div>
+      <div class="step">
+        <p class="step-num">04</p>
+        <h4>Comprendre</h4>
+        <p>Trouve la logique de validation et inverse les opérations.</p>
+      </div>
+      <div class="step">
+        <p class="step-num">05</p>
+        <h4>Exploiter</h4>
+        <p>Écris un script Python pour automatiser la résolution.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>ft_root</span> — Club Cybersécurité 42Lyon
+</footer>
+
+</body>
+</html>

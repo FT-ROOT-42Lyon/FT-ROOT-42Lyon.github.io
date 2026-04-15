@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Outils — ft_root</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #e0001b;
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --bg3: #1a1a1a;
+    --border: #2a2a2a;
+    --text: #e8e8e8;
+    --muted: #888;
+    --mono: 'Share Tech Mono', monospace;
+    --sans: 'Rajdhani', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.6;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+    pointer-events: none;
+    z-index: 100;
+  }
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(10,10,10,0.95);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; gap: 2rem; height: 56px;
+    backdrop-filter: blur(8px);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo img { height: 32px; }
+  .nav-logo span { font-family: var(--mono); font-size: 16px; color: var(--text); letter-spacing: 0.05em; }
+  .nav-logo span b { color: var(--red); }
+  nav a { font-family: var(--mono); font-size: 13px; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+  nav a:hover, nav a.active { color: var(--red); }
+  .nav-links { display: flex; gap: 1.5rem; margin-left: auto; }
+
+  .page-header {
+    padding: 3rem 2rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+  .page-header h1 {
+    font-family: var(--mono);
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+  .page-header h1 span { color: var(--red); }
+  .page-header p { color: var(--muted); font-size: 16px; }
+
+  .main { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
+
+  .section-title {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--red);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .tool-group { margin-bottom: 3rem; }
+
+  .tool-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  .tool-table col.col-name { width: 160px; }
+  .tool-table col.col-desc { width: auto; }
+  .tool-table col.col-cmd { width: 38%; }
+  .tool-table col.col-type { width: 90px; }
+  .tool-table th {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .tool-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+    vertical-align: top;
+  }
+  .tool-table tr:hover td { background: var(--bg2); }
+  .tool-table tr:last-child td { border-bottom: none; }
+
+  .tool-name {
+    font-family: var(--mono);
+    color: var(--red);
+    font-size: 14px;
+    white-space: nowrap;
+  }
+  .tool-desc { color: var(--text); }
+  .tool-cmd {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: #f97316;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    display: inline-block;
+    word-break: break-all;
+    white-space: normal;
+  }
+  .tool-type {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+  footer span { color: var(--red); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="logo.webp" alt="ft_root logo">
+    <span>ft_<b>root</b></span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="outils.html" class="active">Outils</a>
+    <a href="workflows.html">Workflows</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>// <span>outils</span></h1>
+  <p>Tous les outils disponibles dans l'environnement ft_root</p>
+</div>
+
+<div class="main">
+
+  <div class="tool-group">
+    <p class="section-title">Analyse statique générale</p>
+    <table class="tool-table"><colgroup><col class="col-name"><col class="col-desc"><col class="col-cmd"><col class="col-type"></colgroup>
+      <thead>
+        <tr>
+          <th>Outil</th>
+          <th>Description</th>
+          <th>Commande de base</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tool-name">file</span></td>
+          <td class="tool-desc">Identifier le type de binaire (ELF, PE, ARM, MIPS...)</td>
+          <td><span class="tool-cmd">file ./binaire</span></td>
+          <td class="tool-type">CLI</td>
+        </tr>
+        <tr>
+          <td><span class="tool-name">strings</span></td>
+          <td class="tool-desc">Extraire toutes les chaînes de caractères lisibles</td>
+          <td><span class="tool-cmd">strings ./binaire | grep -i flag</span></td>
+          <td class="tool-type">CLI</td>
+        </tr>
+        <tr>
+          <td><span class="tool-name">objdump</span></td>
+          <td class="tool-desc">Désassembler et analyser les sections d'un binaire</td>
+          <td><span class="tool-cmd">objdump -d ./binaire</span></td>
+          <td class="tool-type">CLI</td>
+        </tr>
+        <tr>
+          <td><span class="tool-name">readelf</span></td>
+          <td class="tool-desc">Lire les sections et symboles d'un ELF</td>
+          <td><span class="tool-cmd">readelf -S ./binaire</span></td>
+          <td class="tool-type">CLI</td>
+        </tr>
+        <tr>
+          <td><span class="tool-name">hexdump</span></td>
+          <td class="tool-desc">Afficher le contenu brut en hexadécimal</td>
+          <td><span class="tool-cmd">hexdump -C -s 0xOFFSET -n 32 ./binaire</span></td>
+          <td class="tool-type">CLI</td>
+        </tr>
+        <tr>
+          <td><span class="tool-name">strace / ltrace</span></td>
+          <td class="tool-desc">Tracer les appels système et les appels de fonctions</td>
+          <td><span class="tool-cmd">strace ./binaire</span></td>
+          <td class="tool-type">CLI</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tool-group">
+    <p class="section-title">Décompilation & Débogage</p>
+    <table class="tool-table"><colgroup><col class="col-name"><col class="col-desc"><col class="col-cmd"><col class="col-type"></colgroup>
+      <thead>
+        <tr><th>Outil</th><th>Description</th><th>Commande de base</th><th>Type</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tool-name">ghidra</span></td>
+          <td class="tool-desc">Décompilateur principal — ELF, PE, ARM, MIPS, Go...</td>
+          <td><span class="tool-cmd">ghidra</span></td>
+          <td class="tool-type">GUI</td>
+        </tr>
+        <tr>
+          <td><span class="tool-name">gdb</span></td>
+          <td class="tool-desc">Débogueur dynamique pour ELF Linux</td>
+          <td><span class="tool-cmd">gdb ./binaire</span></td>
+          <td class="tool-type">CLI</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tool-group">
+    <p class="section-title">.NET / C#</p>
+    <table class="tool-table"><colgroup><col class="col-name"><col class="col-desc"><col class="col-cmd"><col class="col-type"></colgroup>
+      <thead>
+        <tr><th>Outil</th><th>Description</th><th>Commande de base</th><th>Type</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tool-name">ilspycmd</span></td>
+          <td class="tool-desc">Décompiler les binaires .NET en C# (CLI)</td>
+          <td><span class="tool-cmd">ilspycmd ./challenge.exe -o ./output/</span></td>
+          <td class="tool-type">CLI</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tool-group">
+    <p class="section-title">Android / APK</p>
+    <table class="tool-table"><colgroup><col class="col-name"><col class="col-desc"><col class="col-cmd"><col class="col-type"></colgroup>
+      <thead>
+        <tr><th>Outil</th><th>Description</th><th>Commande de base</th><th>Type</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tool-name">jadx</span></td>
+          <td class="tool-desc">Décompiler les APK en Java/Kotlin</td>
+          <td><span class="tool-cmd">jadx ./challenge.apk -o ./output/</span></td>
+          <td class="tool-type">CLI</td>
+        </tr>
+        <tr>
+          <td><span class="tool-name">jadx-gui</span></td>
+          <td class="tool-desc">Interface graphique de jadx</td>
+          <td><span class="tool-cmd">jadx-gui ./challenge.apk</span></td>
+          <td class="tool-type">GUI</td>
+        </tr>
+        <tr>
+          <td><span class="tool-name">reflutter</span></td>
+          <td class="tool-desc">Extraire libapp.so des APK Flutter</td>
+          <td><span class="tool-cmd">reflutter ./challenge.apk</span></td>
+          <td class="tool-type">CLI</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tool-group">
+    <p class="section-title">Web / WebAssembly</p>
+    <table class="tool-table"><colgroup><col class="col-name"><col class="col-desc"><col class="col-cmd"><col class="col-type"></colgroup>
+      <thead>
+        <tr><th>Outil</th><th>Description</th><th>Commande de base</th><th>Type</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tool-name">wasm2wat</span></td>
+          <td class="tool-desc">Convertir un binaire WASM en texte lisible</td>
+          <td><span class="tool-cmd">wasm2wat challenge.wasm -o challenge.wat</span></td>
+          <td class="tool-type">CLI</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tool-group">
+    <p class="section-title">Python / PYC</p>
+    <table class="tool-table"><colgroup><col class="col-name"><col class="col-desc"><col class="col-cmd"><col class="col-type"></colgroup>
+      <thead>
+        <tr><th>Outil</th><th>Description</th><th>Commande de base</th><th>Type</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tool-name">uncompyle6</span></td>
+          <td class="tool-desc">Décompile le bytecode python en python lisible</td>
+          <td><span class="tool-cmd">uncompyle6 challenge.pyc -o challenge.py</span></td>
+          <td class="tool-type">CLI</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tool-group">
+    <p class="section-title">Émulation</p>
+    <table class="tool-table"><colgroup><col class="col-name"><col class="col-desc"><col class="col-cmd"><col class="col-type"></colgroup>
+      <thead>
+        <tr><th>Outil</th><th>Description</th><th>Commande de base</th><th>Type</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tool-name">qemu-arm</span></td>
+          <td class="tool-desc">Exécuter des binaires ARM 32 bits</td>
+          <td><span class="tool-cmd">qemu-arm -L /usr/arm-linux-gnueabihf/ ./binaire</span></td>
+          <td class="tool-type">CLI</td>
+        </tr>
+        <tr>
+          <td><span class="tool-name">qemu-aarch64</span></td>
+          <td class="tool-desc">Exécuter des binaires ARM 64 bits</td>
+          <td><span class="tool-cmd">qemu-aarch64 -L /usr/aarch64-linux-gnu/ ./binaire</span></td>
+          <td class="tool-type">CLI</td>
+        </tr>
+        <tr>
+          <td><span class="tool-name">qemu-mips</span></td>
+          <td class="tool-desc">Exécuter des binaires MIPS</td>
+          <td><span class="tool-cmd">qemu-mips ./binaire</span></td>
+          <td class="tool-type">CLI</td>
+        </tr>
+        <tr>
+          <td><span class="tool-name">wine</span></td>
+          <td class="tool-desc">Exécuter des binaires Windows (.exe)</td>
+          <td><span class="tool-cmd">wine ./challenge.exe</span></td>
+          <td class="tool-type">CLI</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tool-group">
+    <p class="section-title">Godot / Lua</p>
+    <table class="tool-table"><colgroup><col class="col-name"><col class="col-desc"><col class="col-cmd"><col class="col-type"></colgroup>
+      <thead>
+        <tr><th>Outil</th><th>Description</th><th>Commande de base</th><th>Type</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tool-name">gdre_tools</span></td>
+          <td class="tool-desc">Extraire et décompiler les projets Godot</td>
+          <td><span class="tool-cmd">gdre_tools --recover ./challenge.pck -o ./output/</span></td>
+          <td class="tool-type">GUI/CLI</td>
+        </tr>
+        <tr>
+          <td><span class="tool-name">unluac</span></td>
+          <td class="tool-desc">Décompiler le bytecode Lua (toutes versions)</td>
+          <td><span class="tool-cmd">unluac ./challenge.luac</span></td>
+          <td class="tool-type">CLI</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tool-group">
+    <p class="section-title">Crypto / Scripting</p>
+    <table class="tool-table"><colgroup><col class="col-name"><col class="col-desc"><col class="col-cmd"><col class="col-type"></colgroup>
+      <thead>
+        <tr><th>Outil</th><th>Description</th><th>Commande de base</th><th>Type</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tool-name">python3</span></td>
+          <td class="tool-desc">Scripting, inversion d'algorithmes, déchiffrement</td>
+          <td><span class="tool-cmd">python3 solve.py</span></td>
+          <td class="tool-type">CLI</td>
+        </tr>
+        <tr>
+          <td><span class="tool-name">pycryptodome</span></td>
+          <td class="tool-desc">Librairie Python pour AES, XOR, RSA...</td>
+          <td><span class="tool-cmd">from Crypto.Cipher import AES</span></td>
+          <td class="tool-type">Python lib</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>
+  <span>ft_root</span> — Club Cybersécurité 42Lyon
+</footer>
+
+</body>
+</html>

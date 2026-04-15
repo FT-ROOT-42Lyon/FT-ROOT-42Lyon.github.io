@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Workflows — ft_root</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #e0001b;
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --bg3: #1a1a1a;
+    --border: #2a2a2a;
+    --text: #e8e8e8;
+    --muted: #888;
+    --mono: 'Share Tech Mono', monospace;
+    --sans: 'Rajdhani', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 17px; line-height: 1.6; }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+    pointer-events: none; z-index: 100;
+  }
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(10,10,10,0.95);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; gap: 2rem; height: 56px;
+    backdrop-filter: blur(8px);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo img { height: 32px; }
+  .nav-logo span { font-family: var(--mono); font-size: 16px; color: var(--text); letter-spacing: 0.05em; }
+  .nav-logo span b { color: var(--red); }
+  nav a { font-family: var(--mono); font-size: 13px; color: var(--muted); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s; }
+  nav a:hover, nav a.active { color: var(--red); }
+  .nav-links { display: flex; gap: 1.5rem; margin-left: auto; }
+
+  .page-header {
+    padding: 3rem 2rem 2rem;
+    max-width: 1100px; margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+  .page-header h1 { font-family: var(--mono); font-size: clamp(1.5rem, 4vw, 2.5rem); letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+  .page-header h1 span { color: var(--red); }
+  .page-header p { color: var(--muted); font-size: 16px; }
+
+  .main { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
+
+  .section-title {
+    font-family: var(--mono); font-size: 12px; color: var(--red);
+    letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .workflows-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 3rem;
+  }
+
+  .wf {
+    background: var(--bg2);
+    padding: 1.5rem;
+    position: relative;
+  }
+
+  .wf-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.2rem;
+  }
+
+  .wf-title {
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--red);
+    letter-spacing: 0.05em;
+  }
+
+  .wf-diff {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    padding: 2px 8px;
+    border: 1px solid;
+    text-transform: uppercase;
+  }
+  .easy { color: #4ade80; border-color: #4ade80; }
+  .medium { color: #facc15; border-color: #facc15; }
+  .hard { color: var(--red); border-color: var(--red); }
+
+  .wf-steps { list-style: none; }
+
+  .wf-steps li {
+    display: flex;
+    gap: 12px;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+    align-items: flex-start;
+  }
+  .wf-steps li:last-child { border-bottom: none; }
+
+  .wf-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--red);
+    min-width: 20px;
+    margin-top: 3px;
+  }
+
+  .wf-step-text { color: var(--text); flex: 1; }
+  .wf-step-text span {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: #f97316;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+  }
+
+  .wf-tools {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tool-pill {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    letter-spacing: 0.05em;
+  }
+
+  /* TIP BOX */
+  .tip {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .tip-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--red);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .tip p { font-size: 15px; color: #aaa; }
+  .tip span {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: #f97316;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem; text-align: center;
+    font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: 0.1em;
+  }
+  footer span { color: var(--red); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="logo.webp" alt="ft_root logo">
+    <span>ft_<b>root</b></span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="outils.html">Outils</a>
+    <a href="workflows.html" class="active">Workflows</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>// <span>workflows</span></h1>
+  <p>Méthodologies par type de binaire — par où commencer et quoi utiliser</p>
+</div>
+
+<div class="main">
+
+  <div class="tip">
+    <p class="tip-label">Toujours commencer par</p>
+    <p>Quelle que soit la cible, commence par <span>file ./binaire</span> pour identifier le type, puis <span>strings ./binaire | grep -i [mot clé]</span>. C'est souvent suffisant pour les challenges simples.</p>
+  </div>
+
+  <p class="section-title">Workflows par type</p>
+
+  <div class="workflows-grid">
+
+    <div class="wf">
+      <div class="wf-header">
+        <span class="wf-title">ELF Linux (x86/x64)</span>
+        <span class="wf-diff easy">débutant</span>
+      </div>
+      <ul class="wf-steps">
+        <li><span class="wf-num">01</span><span class="wf-step-text">Identifier avec <span>file ./binaire</span></span></li>
+        <li><span class="wf-num">02</span><span class="wf-step-text">Chercher les strings avec <span>strings | grep -i [mot clé]</span></span></li>
+        <li><span class="wf-num">03</span><span class="wf-step-text">Ouvrir dans Ghidra → chercher <span>main()</span></span></li>
+        <li><span class="wf-num">04</span><span class="wf-step-text">Trouver la logique de validation</span></li>
+        <li><span class="wf-num">05</span><span class="wf-step-text">Inverser les opérations en Python</span></li>
+      </ul>
+      <div class="wf-tools">
+        <span class="tool-pill">file</span>
+        <span class="tool-pill">strings</span>
+        <span class="tool-pill">ghidra</span>
+        <span class="tool-pill">python3</span>
+      </div>
+    </div>
+
+    <div class="wf">
+      <div class="wf-header">
+        <span class="wf-title">ELF 32 bits (x86)</span>
+        <span class="wf-diff easy">débutant</span>
+      </div>
+      <ul class="wf-steps">
+        <li><span class="wf-num">01</span><span class="wf-step-text">Vérifier avec <span>file</span> → ELF 32-bit</span></li>
+        <li><span class="wf-num">02</span><span class="wf-step-text">Même workflow que ELF x64</span></li>
+      </ul>
+      <div class="wf-tools">
+        <span class="tool-pill">file</span>
+        <span class="tool-pill">ghidra</span>
+      </div>
+    </div>
+
+    <div class="wf">
+      <div class="wf-header">
+        <span class="wf-title">.NET / C# (PE)</span>
+        <span class="wf-diff easy">débutant</span>
+      </div>
+      <ul class="wf-steps">
+        <li><span class="wf-num">01</span><span class="wf-step-text">Décompiler avec <span>ilspycmd ./challenge.exe -o ./out/</span></span></li>
+        <li><span class="wf-num">02</span><span class="wf-step-text">Chercher la logique de validation</span></span></li>
+        <li><span class="wf-num">03</span><span class="wf-step-text">Inverser les opérations en Python</span></li>
+      </ul>
+      <div class="wf-tools">
+        <span class="tool-pill">ilspycmd</span>
+        <span class="tool-pill">python3</span>
+      </div>
+    </div>
+
+    <div class="wf">
+      <div class="wf-header">
+        <span class="wf-title">APK Android (Java)</span>
+        <span class="wf-diff easy">débutant</span>
+      </div>
+      <ul class="wf-steps">
+        <li><span class="wf-num">01</span><span class="wf-step-text">Décompiler avec <span>jadx ./challenge.apk</span></span></li>
+        <li><span class="wf-num">02</span><span class="wf-step-text">Trouver le package principal dans AndroidManifest.xml</span></li>
+        <li><span class="wf-num">03</span><span class="wf-step-text">Chercher <span>MainActivity</span> → logique de validation</span></li>
+        <li><span class="wf-num">04</span><span class="wf-step-text">Inverser les opérations en Python</span></span></li>
+      </ul>
+      <div class="wf-tools">
+        <span class="tool-pill">jadx</span>
+        <span class="tool-pill">jadx-gui</span>
+        <span class="tool-pill">python3</span>
+      </div>
+    </div>
+
+    <div class="wf">
+      <div class="wf-header">
+        <span class="wf-title">APK Flutter</span>
+        <span class="wf-diff medium">intermédiaire</span>
+      </div>
+      <ul class="wf-steps">
+        <li><span class="wf-num">01</span><span class="wf-step-text">Extraire avec <span>jadx challenge.apk</span></span></li>
+        <li><span class="wf-num">02</span><span class="wf-step-text">Release : analyser <span>lib/arm64-v8a/libapp.so</span> avec Ghidra</span></li>
+        <li><span class="wf-num">03</span><span class="wf-step-text">Debug : chercher <span>kernel_blob.bin</span> dans assets</span></li>
+        <li><span class="wf-num">04</span><span class="wf-step-text">Inverser les opérations en Python</span></span></li>
+      </ul>
+      <div class="wf-tools">
+        <span class="tool-pill">jadx</span>
+        <span class="tool-pill">reflutter</span>
+        <span class="tool-pill">ghidra</span>
+        <span class="tool-pill">python3</span>
+      </div>
+    </div>
+
+    <div class="wf">
+      <div class="wf-header">
+        <span class="wf-title">WebAssembly (WASM)</span>
+        <span class="wf-diff medium">intermédiaire</span>
+      </div>
+      <ul class="wf-steps">
+        <li><span class="wf-num">01</span><span class="wf-step-text">Convertir : <span>wasm2wat challenge.wasm -o out.wat</span></span></li>
+        <li><span class="wf-num">02</span><span class="wf-step-text">Chercher dans les sections data (hashes, strings, flags)</span></li>
+        <li><span class="wf-num">03</span><span class="wf-step-text">Analyser la logique de validation dans le .wat</span></li>
+        <li><span class="wf-num">04</span><span class="wf-step-text">Inverser les opérations en Python</span></span></li>
+      </ul>
+      <div class="wf-tools">
+        <span class="tool-pill">wasm2wat</span>
+        <span class="tool-pill">python3</span>
+      </div>
+    </div>
+
+    <div class="wf">
+      <div class="wf-header">
+        <span class="wf-title">ARM / MIPS</span>
+        <span class="wf-diff medium">intermédiaire</span>
+      </div>
+      <ul class="wf-steps">
+        <li><span class="wf-num">01</span><span class="wf-step-text">Chercher les strings avec <span>strings | grep -i [mot clé]</span></span></li>
+        <li><span class="wf-num">02</span><span class="wf-step-text">Analyser statiquement dans Ghidra (supporte ARM/MIPS)</span></li>
+        <li><span class="wf-num">03</span><span class="wf-step-text">Analyser la logique de validation</span></li>
+        <li><span class="wf-num">04</span><span class="wf-step-text">Pour exécuter : <span>qemu-arm ./binaire</span> ou <span>qemu-mips</span></span></li>
+        <li><span class="wf-num">05</span><span class="wf-step-text">Inverser les opérations en Python</span></span></li>
+      </ul>
+      <div class="wf-tools">
+        <span class="tool-pill">ghidra</span>
+        <span class="tool-pill">qemu-arm</span>
+        <span class="tool-pill">qemu-mips</span>
+        <span class="tool-pill">python3</span>
+      </div>
+    </div>
+
+    <div class="wf">
+      <div class="wf-header">
+        <span class="wf-title">Golang</span>
+        <span class="wf-diff medium">intermédiaire</span>
+      </div>
+      <ul class="wf-steps">
+        <li><span class="wf-num">01</span><span class="wf-step-text">Chercher les strings avec <span>strings | grep -i [mot clé]</span></span></li>
+        <li><span class="wf-num">02</span><span class="wf-step-text">Analyser statiquement dans Ghidra → chercher les fonctions <span>main.*</span></span></li>
+        <li><span class="wf-num">03</span><span class="wf-step-text">Analyser la logique de validation</span></li>
+        <li><span class="wf-num">04</span><span class="wf-step-text">Inverser les opérations en Python</span></span></li>
+      </ul>
+      <div class="wf-tools">
+        <span class="tool-pill">ghidra</span>
+        <span class="tool-pill">python3</span>
+      </div>
+    </div>
+
+    <div class="wf">
+      <div class="wf-header">
+        <span class="wf-title">Godot (GDScript / C#)</span>
+        <span class="wf-diff medium">intermédiaire</span>
+      </div>
+      <ul class="wf-steps">
+        <li><span class="wf-num">01</span><span class="wf-step-text">Extraire le .pck : <span>gdre_tools --recover ./challenge.pck</span></span></li>
+        <li><span class="wf-num">02</span><span class="wf-step-text">GDScript → lire les fichiers .gd extraits</span></li>
+        <li><span class="wf-num">03</span><span class="wf-step-text">C# → décompiler la DLL avec <span>ilspycmd</span></span></li>
+        <li><span class="wf-num">04</span><span class="wf-step-text">Chercher la logique de validation du flag</span></li>
+        <li><span class="wf-num">05</span><span class="wf-step-text">Inverser les opérations en Python</span></span></li>
+      </ul>
+      <div class="wf-tools">
+        <span class="tool-pill">gdre_tools</span>
+        <span class="tool-pill">ilspycmd</span>
+        <span class="tool-pill">python3</span>
+      </div>
+    </div>
+
+    <div class="wf">
+      <div class="wf-header">
+        <span class="wf-title">Lua bytecode</span>
+        <span class="wf-diff medium">intermédiaire</span>
+      </div>
+      <ul class="wf-steps">
+        <li><span class="wf-num">01</span><span class="wf-step-text">Décompiler avec <span>unlua ./challenge.luac</span></span></li>
+        <li><span class="wf-num">02</span><span class="wf-step-text">Analyser la logique de validation du flag</span></li>
+        <li><span class="wf-num">03</span><span class="wf-step-text">Inverser les opérations en Python</span></li>
+      </ul>
+      <div class="wf-tools">
+        <span class="tool-pill">unluac</span>
+        <span class="tool-pill">python3</span>
+      </div>
+    </div>
+
+    <div class="wf">
+      <div class="wf-header">
+        <span class="wf-title">Windows .exe (Wine)</span>
+        <span class="wf-diff easy">débutant</span>
+      </div>
+      <ul class="wf-steps">
+        <li><span class="wf-num">01</span><span class="wf-step-text">Exécuter : <span>wine ./challenge.exe</span></span></li>
+        <li><span class="wf-num">02</span><span class="wf-step-text">Si .NET → utiliser <span>ilspycmd</span> directement</span></li>
+        <li><span class="wf-num">03</span><span class="wf-step-text">Si natif → ouvrir dans Ghidra (PE supporté)</span></li>
+        <li><span class="wf-num">04</span><span class="wf-step-text">Analyser la logique de validation du flag</span></li>
+        <li><span class="wf-num">05</span><span class="wf-step-text">Inverser les opérations en Python</span></li>
+      </ul>
+      <div class="wf-tools">
+        <span class="tool-pill">wine</span>
+        <span class="tool-pill">ghidra</span>
+        <span class="tool-pill">ilspycmd</span>
+        <span class="tool-pill">python3</span>
+      </div>
+    </div>
+
+    <div class="wf">
+      <div class="wf-header">
+        <span class="wf-title">Python bytecode (.pyc)</span>
+        <span class="wf-diff easy">débutant</span>
+      </div>
+      <ul class="wf-steps">
+        <li><span class="wf-num">01</span><span class="wf-step-text">Décompiler avec <span>uncompyle6 ./challenge.pyc</span></span></li>
+        <li><span class="wf-num">02</span><span class="wf-step-text">Lire le code Python décompilé</span></li>
+        <li><span class="wf-num">03</span><span class="wf-step-text">Inverser les opérations en Python</span></li>
+      </ul>
+      <div class="wf-tools">
+        <span class="tool-pill">uncompyle6</span>
+        <span class="tool-pill">python3</span>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="section-title">Conseils généraux</p>
+
+  <div class="tip">
+    <p class="tip-label">Analyse statique vs dynamique</p>
+    <p>Commence toujours par l'analyse statique (<span>strings</span>, <span>ghidra</span>). L'analyse dynamique (<span>gdb</span>, <span>strace</span>) sert quand le code est trop complexe à lire ou obfusqué.</p>
+  </div>
+
+  <div class="tip">
+    <p class="tip-label">Quand utiliser Python</p>
+    <p>Dès que tu as compris l'algorithme, réécris-le en Python et inverse-le. C'est plus rapide que d'exécuter le binaire et de bruteforcer.</p>
+  </div>
+
+  <div class="tip">
+    <p class="tip-label">Hashes trouvés</p>
+    <p>Si tu trouves un hash MD5/SHA dans un binaire, teste-le directement sur <span>crackstation.net</span> ou <span>hashes.com</span> avant de chercher à l'inverser.</p>
+  </div>
+
+</div>
+
+<footer>
+  <span>ft_root</span> — Club Cybersécurité 42Lyon
+</footer>
+
+</body>
+</html>
