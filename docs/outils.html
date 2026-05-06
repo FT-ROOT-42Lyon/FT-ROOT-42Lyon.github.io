@@ -209,7 +209,7 @@
         <tr>
           <td><span class="tool-name">hexdump</span></td>
           <td class="tool-desc">Afficher le contenu brut en hexadécimal</td>
-          <td><span class="tool-cmd">hexdump -C -s 0xOFFSET -n 32 ./binaire</span></td>
+          <td><span class="tool-cmd">hexdump -C -s 0x0F7 -n 32 ./binaire</span></td>
           <td class="tool-type">CLI</td>
         </tr>
         <tr>
@@ -255,7 +255,7 @@
         <tr>
           <td><span class="tool-name">ilspycmd</span></td>
           <td class="tool-desc">Décompiler les binaires .NET en C# (CLI)</td>
-          <td><span class="tool-cmd">ilspycmd ./challenge.exe -o ./output/</span></td>
+          <td><span class="tool-cmd">ilspycmd ./challenge.exe</span></td>
           <td class="tool-type">CLI</td>
         </tr>
       </tbody>
@@ -272,7 +272,7 @@
         <tr>
           <td><span class="tool-name">jadx</span></td>
           <td class="tool-desc">Décompiler les APK en Java/Kotlin</td>
-          <td><span class="tool-cmd">jadx ./challenge.apk -o ./output/</span></td>
+          <td><span class="tool-cmd">jadx ./challenge.apk</span></td>
           <td class="tool-type">CLI</td>
         </tr>
         <tr>
@@ -283,7 +283,7 @@
         </tr>
         <tr>
           <td><span class="tool-name">reflutter</span></td>
-          <td class="tool-desc">Extraire libapp.so des APK Flutter</td>
+          <td class="tool-desc">Décompiler le binaire libapp.so des APK Flutter</td>
           <td><span class="tool-cmd">reflutter ./challenge.apk</span></td>
           <td class="tool-type">CLI</td>
         </tr>
@@ -301,7 +301,7 @@
         <tr>
           <td><span class="tool-name">wasm2wat</span></td>
           <td class="tool-desc">Convertir un binaire WASM en texte lisible</td>
-          <td><span class="tool-cmd">wasm2wat challenge.wasm -o challenge.wat</span></td>
+          <td><span class="tool-cmd">wasm2wat challenge.wasm</span></td>
           <td class="tool-type">CLI</td>
         </tr>
       </tbody>
@@ -318,7 +318,7 @@
         <tr>
           <td><span class="tool-name">uncompyle6</span></td>
           <td class="tool-desc">Décompile le bytecode python en python lisible</td>
-          <td><span class="tool-cmd">uncompyle6 challenge.pyc -o challenge.py</span></td>
+          <td><span class="tool-cmd">uncompyle6 challenge.pyc</span></td>
           <td class="tool-type">CLI</td>
         </tr>
       </tbody>
@@ -370,7 +370,7 @@
         <tr>
           <td><span class="tool-name">gdre_tools</span></td>
           <td class="tool-desc">Extraire et décompiler les projets Godot</td>
-          <td><span class="tool-cmd">gdre_tools --recover ./challenge.pck -o ./output/</span></td>
+          <td><span class="tool-cmd">gdre_tools</span></td>
           <td class="tool-type">GUI/CLI</td>
         </tr>
         <tr>
@@ -395,12 +395,6 @@
           <td class="tool-desc">Scripting, inversion d'algorithmes, déchiffrement</td>
           <td><span class="tool-cmd">python3 solve.py</span></td>
           <td class="tool-type">CLI</td>
-        </tr>
-        <tr>
-          <td><span class="tool-name">pycryptodome</span></td>
-          <td class="tool-desc">Librairie Python pour AES, XOR, RSA...</td>
-          <td><span class="tool-cmd">from Crypto.Cipher import AES</span></td>
-          <td class="tool-type">Python lib</td>
         </tr>
       </tbody>
     </table>

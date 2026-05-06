@@ -213,7 +213,7 @@
 
   <div class="tip">
     <p class="tip-label">Toujours commencer par</p>
-    <p>Quelle que soit la cible, commence par <span>file ./binaire</span> pour identifier le type, puis <span>strings ./binaire | grep -i [mot clé]</span>. C'est souvent suffisant pour les challenges simples.</p>
+    <p>Quelle que soit la cible, commence par <span>file ./binaire</span> pour identifier le type, puis <span>strings ./binaire | grep -i [mot clé]</span>. C'est suffisant pour les challenges très basique ou pour donnée une idée du challenge.</p>
   </div>
 
   <p class="section-title">Workflows par type</p>
@@ -226,32 +226,11 @@
         <span class="wf-diff easy">débutant</span>
       </div>
       <ul class="wf-steps">
-        <li><span class="wf-num">01</span><span class="wf-step-text">Identifier avec <span>file ./binaire</span></span></li>
-        <li><span class="wf-num">02</span><span class="wf-step-text">Chercher les strings avec <span>strings | grep -i [mot clé]</span></span></li>
-        <li><span class="wf-num">03</span><span class="wf-step-text">Ouvrir dans Ghidra → chercher <span>main()</span></span></li>
-        <li><span class="wf-num">04</span><span class="wf-step-text">Trouver la logique de validation</span></li>
-        <li><span class="wf-num">05</span><span class="wf-step-text">Inverser les opérations en Python</span></li>
+        <li><span class="wf-num">01</span><span class="wf-step-text">Ouvrir dans Ghidra</span></li>
       </ul>
       <div class="wf-tools">
-        <span class="tool-pill">file</span>
-        <span class="tool-pill">strings</span>
         <span class="tool-pill">ghidra</span>
         <span class="tool-pill">python3</span>
-      </div>
-    </div>
-
-    <div class="wf">
-      <div class="wf-header">
-        <span class="wf-title">ELF 32 bits (x86)</span>
-        <span class="wf-diff easy">débutant</span>
-      </div>
-      <ul class="wf-steps">
-        <li><span class="wf-num">01</span><span class="wf-step-text">Vérifier avec <span>file</span> → ELF 32-bit</span></li>
-        <li><span class="wf-num">02</span><span class="wf-step-text">Même workflow que ELF x64</span></li>
-      </ul>
-      <div class="wf-tools">
-        <span class="tool-pill">file</span>
-        <span class="tool-pill">ghidra</span>
       </div>
     </div>
 
@@ -261,13 +240,11 @@
         <span class="wf-diff easy">débutant</span>
       </div>
       <ul class="wf-steps">
-        <li><span class="wf-num">01</span><span class="wf-step-text">Décompiler avec <span>ilspycmd ./challenge.exe -o ./out/</span></span></li>
-        <li><span class="wf-num">02</span><span class="wf-step-text">Chercher la logique de validation</span></span></li>
-        <li><span class="wf-num">03</span><span class="wf-step-text">Inverser les opérations en Python</span></li>
+        <li><span class="wf-num">01</span><span class="wf-step-text">Décompiler avec <span>ilspycmd ./challenge.exe</span></span></li>
       </ul>
       <div class="wf-tools">
         <span class="tool-pill">ilspycmd</span>
-        <span class="tool-pill">python3</span>
+        <span class="tool-pill">wine</span>
       </div>
     </div>
 
@@ -278,33 +255,29 @@
       </div>
       <ul class="wf-steps">
         <li><span class="wf-num">01</span><span class="wf-step-text">Décompiler avec <span>jadx ./challenge.apk</span></span></li>
-        <li><span class="wf-num">02</span><span class="wf-step-text">Trouver le package principal dans AndroidManifest.xml</span></li>
-        <li><span class="wf-num">03</span><span class="wf-step-text">Chercher <span>MainActivity</span> → logique de validation</span></li>
-        <li><span class="wf-num">04</span><span class="wf-step-text">Inverser les opérations en Python</span></span></li>
+        <li><span class="wf-num">02</span><span class="wf-step-text">Trouver les fichier intéréssant (com.example.app, AndroidManifest.xml)</span></li>
       </ul>
       <div class="wf-tools">
         <span class="tool-pill">jadx</span>
         <span class="tool-pill">jadx-gui</span>
-        <span class="tool-pill">python3</span>
       </div>
     </div>
 
     <div class="wf">
       <div class="wf-header">
-        <span class="wf-title">APK Flutter</span>
+        <span class="wf-title">APK</span>
         <span class="wf-diff medium">intermédiaire</span>
       </div>
       <ul class="wf-steps">
-        <li><span class="wf-num">01</span><span class="wf-step-text">Extraire avec <span>jadx challenge.apk</span></span></li>
-        <li><span class="wf-num">02</span><span class="wf-step-text">Release : analyser <span>lib/arm64-v8a/libapp.so</span> avec Ghidra</span></li>
-        <li><span class="wf-num">03</span><span class="wf-step-text">Debug : chercher <span>kernel_blob.bin</span> dans assets</span></li>
-        <li><span class="wf-num">04</span><span class="wf-step-text">Inverser les opérations en Python</span></span></li>
+        <li><span class="wf-num">01</span><span class="wf-step-text">Décompiler avec <span>jadx ./challenge.apk</span></span></li>
+        <li><span class="wf-num">02b</span><span class="wf-step-text">-> APK Flutter Debug le code source est contenu dans l'APK</span></li>
+        <li><span class="wf-num">02b</span><span class="wf-step-text">-> APK Flutter Debug le code source est contenu dans l'APK</span></li>
+        <li><span class="wf-num">02c</span><span class="wf-step-text">-> APK Flutter Release décompiler libapp.so avec <span>reflutter</span></span></li>
       </ul>
       <div class="wf-tools">
         <span class="tool-pill">jadx</span>
+        <span class="tool-pill">jadx-gui</span>
         <span class="tool-pill">reflutter</span>
-        <span class="tool-pill">ghidra</span>
-        <span class="tool-pill">python3</span>
       </div>
     </div>
 
