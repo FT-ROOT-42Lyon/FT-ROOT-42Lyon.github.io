@@ -213,7 +213,7 @@
 
   <div class="tip">
     <p class="tip-label">Toujours commencer par</p>
-    <p>Quelle que soit la cible, commence par <span>file ./binaire</span> pour identifier le type, puis <span>strings ./binaire | grep -i [mot clé]</span>. C'est suffisant pour les challenges très basique ou pour donnée une idée du challenge.</p>
+    <p>Quelle que soit la cible, commence par <span>file ./binaire</span> pour identifier le type, puis <span>strings ./binaire | grep -i [mot clé]</span>. C'est suffisant pour les challenges très basique ou pour avoir un aperçu du challenge.</p>
   </div>
 
   <p class="section-title">Workflows par type</p>
@@ -226,7 +226,7 @@
         <span class="wf-diff easy">débutant</span>
       </div>
       <ul class="wf-steps">
-        <li><span class="wf-num">01</span><span class="wf-step-text">Ouvrir dans Ghidra</span></li>
+        <li><span class="wf-num">01</span><span class="wf-step-text">Décompiler dans Ghidra</span></li>
       </ul>
       <div class="wf-tools">
         <span class="tool-pill">ghidra</span>
@@ -236,30 +236,17 @@
 
     <div class="wf">
       <div class="wf-header">
-        <span class="wf-title">.NET / C# (PE)</span>
+        <span class="wf-title">PE/Dotnet (Windows)</span>
         <span class="wf-diff easy">débutant</span>
       </div>
       <ul class="wf-steps">
-        <li><span class="wf-num">01</span><span class="wf-step-text">Décompiler avec <span>ilspycmd ./challenge.exe</span></span></li>
-      </ul>
+		<li><span class="wf-num">01a</span><span class="wf-step-text">PE natif -> Décompiler dans Ghidra</span></li>
+        <li><span class="wf-num">01b</span><span class="wf-step-text">PE Dotnet -> Décompiler avec <span>ilspycmd ./challenge.exe</span></span></li>
+		<li><span class="wf-num">02</span><span class="wf-step-text">Pour l'executé <span>wine ./challenge.exe</span></span></li>
+	  </ul>
       <div class="wf-tools">
         <span class="tool-pill">ilspycmd</span>
         <span class="tool-pill">wine</span>
-      </div>
-    </div>
-
-    <div class="wf">
-      <div class="wf-header">
-        <span class="wf-title">APK Android (Java)</span>
-        <span class="wf-diff easy">débutant</span>
-      </div>
-      <ul class="wf-steps">
-        <li><span class="wf-num">01</span><span class="wf-step-text">Décompiler avec <span>jadx ./challenge.apk</span></span></li>
-        <li><span class="wf-num">02</span><span class="wf-step-text">Trouver les fichier intéréssant (com.example.app, AndroidManifest.xml)</span></li>
-      </ul>
-      <div class="wf-tools">
-        <span class="tool-pill">jadx</span>
-        <span class="tool-pill">jadx-gui</span>
       </div>
     </div>
 
@@ -269,10 +256,9 @@
         <span class="wf-diff medium">intermédiaire</span>
       </div>
       <ul class="wf-steps">
-        <li><span class="wf-num">01</span><span class="wf-step-text">Décompiler avec <span>jadx ./challenge.apk</span></span></li>
-        <li><span class="wf-num">02b</span><span class="wf-step-text">-> APK Flutter Debug le code source est contenu dans l'APK</span></li>
-        <li><span class="wf-num">02b</span><span class="wf-step-text">-> APK Flutter Debug le code source est contenu dans l'APK</span></li>
-        <li><span class="wf-num">02c</span><span class="wf-step-text">-> APK Flutter Release décompiler libapp.so avec <span>reflutter</span></span></li>
+        <li><span class="wf-num">01</span><span class="wf-step-text">Dépacker avec <span>jadx ./challenge.apk</span></span></li>
+        <li><span class="wf-num">02a</span><span class="wf-step-text">-> APK Standard le code Java est contenu dans l'APK</span></li>
+        <li><span class="wf-num">02b</span><span class="wf-step-text">-> APK Flutter Debug le code Dart est contenu dans l'APK</span></li>
       </ul>
       <div class="wf-tools">
         <span class="tool-pill">jadx</span>
@@ -287,14 +273,12 @@
         <span class="wf-diff medium">intermédiaire</span>
       </div>
       <ul class="wf-steps">
-        <li><span class="wf-num">01</span><span class="wf-step-text">Convertir : <span>wasm2wat challenge.wasm -o out.wat</span></span></li>
-        <li><span class="wf-num">02</span><span class="wf-step-text">Chercher dans les sections data (hashes, strings, flags)</span></li>
-        <li><span class="wf-num">03</span><span class="wf-step-text">Analyser la logique de validation dans le .wat</span></li>
-        <li><span class="wf-num">04</span><span class="wf-step-text">Inverser les opérations en Python</span></span></li>
-      </ul>
+        <li><span class="wf-num">01a</span><span class="wf-step-text">Convertir le WASM en WebAssembly Text format: <span>wasm2wat challenge.wasm -o out.wat</span></span></li>
+        <li><span class="wf-num">01b</span><span class="wf-step-text">OU Convertir le WASM en C équivalent: <span>wasm2c challenge.wasm -o out.c</span></span></li>
+	  </ul>
       <div class="wf-tools">
         <span class="tool-pill">wasm2wat</span>
-        <span class="tool-pill">python3</span>
+        <span class="tool-pill">wasm2c</span>
       </div>
     </div>
 
@@ -304,17 +288,13 @@
         <span class="wf-diff medium">intermédiaire</span>
       </div>
       <ul class="wf-steps">
-        <li><span class="wf-num">01</span><span class="wf-step-text">Chercher les strings avec <span>strings | grep -i [mot clé]</span></span></li>
-        <li><span class="wf-num">02</span><span class="wf-step-text">Analyser statiquement dans Ghidra (supporte ARM/MIPS)</span></li>
-        <li><span class="wf-num">03</span><span class="wf-step-text">Analyser la logique de validation</span></li>
-        <li><span class="wf-num">04</span><span class="wf-step-text">Pour exécuter : <span>qemu-arm ./binaire</span> ou <span>qemu-mips</span></span></li>
-        <li><span class="wf-num">05</span><span class="wf-step-text">Inverser les opérations en Python</span></span></li>
+        <li><span class="wf-num">02</span><span class="wf-step-text">Décompiler dans Ghidra</span></li>
+        <li><span class="wf-num">02</span><span class="wf-step-text">Pour exécuter : <span>qemu-arm ./binaire</span> ou <span>qemu-mips</span></span></li>
       </ul>
       <div class="wf-tools">
         <span class="tool-pill">ghidra</span>
         <span class="tool-pill">qemu-arm</span>
         <span class="tool-pill">qemu-mips</span>
-        <span class="tool-pill">python3</span>
       </div>
     </div>
 
@@ -324,81 +304,46 @@
         <span class="wf-diff medium">intermédiaire</span>
       </div>
       <ul class="wf-steps">
-        <li><span class="wf-num">01</span><span class="wf-step-text">Chercher les strings avec <span>strings | grep -i [mot clé]</span></span></li>
-        <li><span class="wf-num">02</span><span class="wf-step-text">Analyser statiquement dans Ghidra → chercher les fonctions <span>main.*</span></span></li>
-        <li><span class="wf-num">03</span><span class="wf-step-text">Analyser la logique de validation</span></li>
-        <li><span class="wf-num">04</span><span class="wf-step-text">Inverser les opérations en Python</span></span></li>
+        <li><span class="wf-num">01</span><span class="wf-step-text">Décompiler dans Ghidra</span></li>
       </ul>
       <div class="wf-tools">
         <span class="tool-pill">ghidra</span>
-        <span class="tool-pill">python3</span>
       </div>
     </div>
 
     <div class="wf">
       <div class="wf-header">
-        <span class="wf-title">Godot (GDScript / C#)</span>
+        <span class="wf-title">Godot</span>
         <span class="wf-diff medium">intermédiaire</span>
       </div>
       <ul class="wf-steps">
-        <li><span class="wf-num">01</span><span class="wf-step-text">Extraire le .pck : <span>gdre_tools --recover ./challenge.pck</span></span></li>
-        <li><span class="wf-num">02</span><span class="wf-step-text">GDScript → lire les fichiers .gd extraits</span></li>
-        <li><span class="wf-num">03</span><span class="wf-step-text">C# → décompiler la DLL avec <span>ilspycmd</span></span></li>
-        <li><span class="wf-num">04</span><span class="wf-step-text">Chercher la logique de validation du flag</span></li>
-        <li><span class="wf-num">05</span><span class="wf-step-text">Inverser les opérations en Python</span></span></li>
-      </ul>
+        <li><span class="wf-num">01</span><span class="wf-step-text">Décompiler avec : <span>gdre_tools --recover=./challenge.exe</span></span></li>
+	  </ul>
       <div class="wf-tools">
         <span class="tool-pill">gdre_tools</span>
-        <span class="tool-pill">ilspycmd</span>
-        <span class="tool-pill">python3</span>
       </div>
     </div>
 
     <div class="wf">
       <div class="wf-header">
-        <span class="wf-title">Lua bytecode</span>
+        <span class="wf-title">Lua Bytecode</span>
         <span class="wf-diff medium">intermédiaire</span>
       </div>
       <ul class="wf-steps">
-        <li><span class="wf-num">01</span><span class="wf-step-text">Décompiler avec <span>unlua ./challenge.luac</span></span></li>
-        <li><span class="wf-num">02</span><span class="wf-step-text">Analyser la logique de validation du flag</span></li>
-        <li><span class="wf-num">03</span><span class="wf-step-text">Inverser les opérations en Python</span></li>
+        <li><span class="wf-num">01</span><span class="wf-step-text">Décompiler avec <span>unluac ./challenge.lua</span></span></li>
       </ul>
       <div class="wf-tools">
         <span class="tool-pill">unluac</span>
-        <span class="tool-pill">python3</span>
       </div>
     </div>
 
     <div class="wf">
       <div class="wf-header">
-        <span class="wf-title">Windows .exe (Wine)</span>
-        <span class="wf-diff easy">débutant</span>
-      </div>
-      <ul class="wf-steps">
-        <li><span class="wf-num">01</span><span class="wf-step-text">Exécuter : <span>wine ./challenge.exe</span></span></li>
-        <li><span class="wf-num">02</span><span class="wf-step-text">Si .NET → utiliser <span>ilspycmd</span> directement</span></li>
-        <li><span class="wf-num">03</span><span class="wf-step-text">Si natif → ouvrir dans Ghidra (PE supporté)</span></li>
-        <li><span class="wf-num">04</span><span class="wf-step-text">Analyser la logique de validation du flag</span></li>
-        <li><span class="wf-num">05</span><span class="wf-step-text">Inverser les opérations en Python</span></li>
-      </ul>
-      <div class="wf-tools">
-        <span class="tool-pill">wine</span>
-        <span class="tool-pill">ghidra</span>
-        <span class="tool-pill">ilspycmd</span>
-        <span class="tool-pill">python3</span>
-      </div>
-    </div>
-
-    <div class="wf">
-      <div class="wf-header">
-        <span class="wf-title">Python bytecode (.pyc)</span>
-        <span class="wf-diff easy">débutant</span>
+        <span class="wf-title">Python Bytecode</span>
+        <span class="wf-diff medium">intermédiaire</span>
       </div>
       <ul class="wf-steps">
         <li><span class="wf-num">01</span><span class="wf-step-text">Décompiler avec <span>uncompyle6 ./challenge.pyc</span></span></li>
-        <li><span class="wf-num">02</span><span class="wf-step-text">Lire le code Python décompilé</span></li>
-        <li><span class="wf-num">03</span><span class="wf-step-text">Inverser les opérations en Python</span></li>
       </ul>
       <div class="wf-tools">
         <span class="tool-pill">uncompyle6</span>
